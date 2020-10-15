@@ -5,31 +5,30 @@ from pygame import mixer
 
 
 class MusicPlayer:
-    window = None
-
+    """Little Music Player"""
     def __init__(self, window):
-        self.window = window
-        window.geometry('320x100')
         window.title('Little Music Player')
+        window.geometry('320x150')
         window.resizable(0, 0)
         Load = Button(window, text='Load', width=10, font=('Times', 10), command=self.load)
         Play = Button(window, text='Play', width=10, font=('Times', 10), command=self.play)
         Pause = Button(window, text='Pause', width=10, font=('Times', 10), command=self.pause)
         Stop = Button(window, text='Stop', width=10, font=('Times', 10), command=self.stop)
-        Load.place(x=0, y=20)
+        self.music_file = None
+        self.SongLabel = Label(window, text=self.music_file)
+        Load.place(x=15, y=20)
         Play.place(x=110, y=20)
         Pause.place(x=220, y=20)
         Stop.place(x=110, y=60)
-        self.music_file = None
+        self.SongLabel.place(x=110, y=100)
         self.playing_state = False
+        self.music_window = window
 
     def load(self):
         path_string = filedialog.askopenfilename()
         if os.path.isfile(path_string):
-            print('Path knows that it\'s a path')
             self.music_file = path_string
-            self.window.title = os.path.basename(path_string)  # not reflecting in gui for some reason
-            print('Window title is now:', self.window.title)
+            self.SongLabel['text'] = os.path.basename(path_string)
 
     def play(self):
         if os.path.isfile(self.music_file):
